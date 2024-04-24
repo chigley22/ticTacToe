@@ -1,106 +1,123 @@
-import java.util.Scanner;
+package ticTacToe;
 
-public class ticTacToe {
-    public static void main(String[] args) {
-        ticTacToe ticTacToe = new ticTacToe();
-        ticTacToe.displayWelcomeMessage();
-        ticTacToe.startGame();
-    }
+public class TicTacToe {
+	private char[][] data;
+	private int rowNumber;
+	private int columnNumber;
+	private char markSelected;
+	
+	public TicTacToe() {
+		data = new char[3][3];
+		rowNumber = 0;
+		columnNumber = 0;
+		markSelected = 'X';
+	}
+	
+	public void displayWelcomeMessage() {
+		System.out.println("Welcome to Tic Tac Toe");
+	}
+	
+	public void displayGrid() {
+		System.out.println("+---+---+---+");
+		for (int i = 0; i < 3; i++) {
+			System.out.print("| ");
+			for (int j = 0; j < 3; j++) {
+				System.out.print(data[i][j] + " | ");
+			}
+			System.out.println("\n+---+---+---+");
+		}
+	}
+	
+	public void startGame() {
+		boolean gameOver = false;
+		while (!gameOver) {
+			takeTurn();
+			displayGrid();
+			gameOver = checkForWinner();
+		}
+	}
+	
+	public void takeTurn() {
+		System.out.println(markSelected + "'s turn");
+		System.out.print("Pick a row (1, 2, 3): ");
+		rowNumber = readInput() - 1;
+		System.out.print("Pick a column (1, 2, 3): ");
+		columnNumber = readInput() - 1;
+		
+		while (data[rowNumber][columnNumber] != '\u0000') {
+			System.out.println("Cell already marked. Choose another.");
+			System.out.print("Pick a row (1, 2, 3): ");
+			rowNumber = readInput() - 1;
+			System.out.print("Pick a column (1, 2, 3): ");
+			columnNumber = readInput() - 1;
+		}
+	
+		data[rowNumber][columnNumber] = markSelected;
+	
+		markSelected = (markSelected == 'X') ? 'O' : 'X';
+	}
 
-    private char[][] board;
-    private int rowNumber;
-    private int columnNumber;
-    private char markSelected;
+	private int readInput() {
+		java.util.Scanner scanner = new java.util.Scanner(System.in);
+		int input = scanner.nextInt();
+		scanner.nextLine();
+		return input;
+	}
 
-    public ticTacToe() {
-        this.board = new char[3][3];
-        this.rowNumber = 0;
-        this.columnNumber = 0;
-        this.markSelected = ' ';
-    }
-
-    public void displayWelcomeMessage() {
-        System.out.println("Welcome to Tic Tac Toe!");
-    }
-
-    public void displayGrid() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    public void startGame() {
-        boolean gameOver = false;
-        Scanner scanner = new Scanner(System.in);
-
-        while (!gameOver) {
-            displayGrid();
-            gameOver = takeTurn(scanner);
-        }
-
-        scanner.close();
-    }
-
-    public boolean takeTurn(Scanner scanner) {
-        determineMarkSelected();
-        promptRowNumber(scanner);
-        promptColumnNumber(scanner);
-
-        if (board[rowNumber][columnNumber] != ' ') {
-            System.out.println("Cell already taken. Please choose another.");
-            return false;
-        }
-
-        board[rowNumber][columnNumber] = markSelected;
-        displayGrid();
-
-        return checkForWinner();
-    }
-
-    private void determineMarkSelected() {
-        markSelected = (markSelected == 'X') ? 'O' : 'X';
-        System.out.println("Player " + markSelected + ", it's your turn.");
-    }
-
-    private void promptRowNumber(Scanner scanner) {
-        System.out.print("Enter row number (0-2): ");
-        rowNumber = scanner.nextInt();
-    }
-
-    private void promptColumnNumber(Scanner scanner) {
-        System.out.print("Enter column number (0-2): ");
-        columnNumber = scanner.nextInt();
-    }
-
-    public boolean checkForWinner() {
-        // Check rows
-        for (int i = 0; i < 3; i++) {
-            if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != ' ') {
-                System.out.println("Player " + markSelected + " wins!");
-                return true;
-            }
-        }
-
-        // Check columns
-        for (int j = 0; j < 3; j++) {
-            if (board[0][j] == board[1][j] && board[1][j] == board[2][j] && board[0][j] != ' ') {
-                System.out.println("Player " + markSelected + " wins!");
-                return true;
-            }
-        }
-
-        // Check diagonals
-        if ((board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != ' ') ||
-            (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != ' ')) {
-            System.out.println("Player " + markSelected + " wins!");
-            return true;
-        }
-
-        return false;
-    }
+	public boolean checkForWinner() {
+		for (int i = 0; i < 3; i++) {
+			if (data[i][0] != '\u0000' && data[i][0] == data[i][1] && data[i][1] == data[i][2]) {
+				System.out.println("Player " + data[i][0] + " wins!");
+				return true;
+			}
+		}
+	
+		for (int j = 0; j < 3; j++) {
+			if (data[0][j] != '\u0000' && data[0][j] == data[1][j] && data[1][j] == data[2][j]) {
+				System.out.println("Player " + data[0][j] + " wins!");
+				return true;
+			}
+		}
+	
+		if (data[0][0] != '\u0000' && data[0][0] == data[1][1] && data[1][1] == data[2][2]) {
+			System.out.println("Player " + data[0][0] + " wins!");
+			return true;
+		}
+	
+		if (data[0][2] != '\u0000' && data[0][0] == data[1][1] && data[1][1] == data[2][0]) {
+			System.out.println("Player " + data[0][2] + " wins!");
+			return true;
+		}
+	
+		int totalMoves = 0;
+		for (char[] row : data) {
+			for (char cell : row) {
+				if (cell != '\u0000') {
+					totalMoves++;
+				}
+			}
+		}
+	
+		if (totalMoves == 9) {
+			System.out.println("It's a tie!");
+			return true;
+		}
+	
+		return false;
+	}
 }
 
+
+package ticTacToe;
+
+public class TicTacToeApp {
+	public static void main(String[]args) {
+		TicTacToe ticTacToe = new TicTacToe();
+		ticTacToe.displayWelcomeMessage();
+		ticTacToe.displayGrid();
+		ticTacToe.startGame();
+		
+	}
+	
+}
 
