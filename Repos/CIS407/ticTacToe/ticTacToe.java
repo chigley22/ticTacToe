@@ -1,4 +1,3 @@
-package ticTacToe;
 
 public class TicTacToe {
 	private char[][] data;
@@ -108,16 +107,5 @@ public class TicTacToe {
 }
 
 
-package ticTacToe;
 
-public class TicTacToeApp {
-	public static void main(String[]args) {
-		TicTacToe ticTacToe = new TicTacToe();
-		ticTacToe.displayWelcomeMessage();
-		ticTacToe.displayGrid();
-		ticTacToe.startGame();
-		
-	}
-	
-}
 
